@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#764ba2">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('service-worker.js');
+        });
+      }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Menu Screen -->
+        <div class="menu-screen" id="menu-screen">
+            <div class="menu-content">
+                <h1 class="menu-title">🎮 MATH QUIZ</h1>
+                <p class="menu-subtitle">Solve math questions before your attempts run out!</p>
+                
+                <div class="menu-buttons">
+                    <button class="menu-btn" id="play-btn">🎯 Play Game</button>
+                    <button class="menu-btn" id="rules-btn">📖 Rules</button>
+                    <button class="menu-btn" id="difficulty-btn">⚙️ Difficulty</button>
+                    <button class="menu-btn" id="leaderboard-btn">🏆 Leaderboard</button>
+                    <button class="menu-btn admin-icon" id="admin-btn" onclick="window.open('admin.html','_blank')" title="Administrator">🔑</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rules Modal -->
+        <div class="modal" id="rules-modal">
+            <div class="modal-content">
+                <span class="close-btn" id="close-rules">&times;</span>
+                <h2>How to Play</h2>
+                <ul>
+                    <li>Read the math question shown</li>
+                    <li>Type your numeric answer and submit</li>
+                    <li>You have limited attempts (difficulty-based)</li>
+                    <li>Correct answer gives points and next question</li>
+                    <li>Wrong answer cost an attempt</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Difficulty Modal -->
+        <div class="modal" id="difficulty-modal">
+            <div class="modal-content">
+                <span class="close-btn" id="close-difficulty">&times;</span>
+                <h2>Select Difficulty</h2>
+                <div class="difficulty-options">
+                    <button class="difficulty-btn" data-difficulty="easy">Easy (6 wrong guesses)</button>
+                    <button class="difficulty-btn active" data-difficulty="normal">Normal (6 wrong guesses)</button>
+                    <button class="difficulty-btn" data-difficulty="hard">Hard (4 wrong guesses)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Modal -->
+        <div class="modal" id="leaderboard-modal">
+            <div class="modal-content leaderboard-content">
+                <span class="close-btn" id="close-leaderboard">&times;</span>
+                <h2>🏆 Leaderboard</h2>
+                <div class="leaderboard-filters">
+                    <button class="leaderboard-filter-btn active" data-difficulty="all">All</button>
+                    <button class="leaderboard-filter-btn" data-difficulty="easy">Easy</button>
+                    <button class="leaderboard-filter-btn" data-difficulty="normal">Normal</button>
+                    <button class="leaderboard-filter-btn" data-difficulty="hard">Hard</button>
+                </div>
+                <div class="leaderboard-table" id="leaderboard-table">
+                    <div class="leaderboard-empty">No scores yet. Play a game to get on the leaderboard!</div>
+                </div>
+                <button class="menu-btn" id="clear-leaderboard-menu">🗑️ Clear My Name</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="game-screen" id="game-screen" style="display: none;">
+            <div class="game-content">
+                <div class="top-controls">
+                    <button class="back-btn" id="back-btn">← Back to Menu</button>
+                    <button class="sound-btn" id="sound-btn" title="Toggle sound">🔊</button>
+                </div>
+                <h1>🎮 Math Quiz</h1>
+                
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">⏱️ Time:</span>
+                        <span class="stat-value" id="timer">30</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">⭐ Score:</span>
+                        <span class="stat-value" id="score-display">0</span>
+                    </div>
+                </div>
+                
+                <div class="game-area">
+                <div class="hangman-section">
+                    <svg class="hangman-svg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Gallows base -->
+                        <line x1="10" y1="230" x2="150" y2="230" stroke="#333" stroke-width="4"/>
+                        <line x1="50" y1="230" x2="50" y2="20" stroke="#333" stroke-width="4"/>
+                        <line x1="50" y1="20" x2="130" y2="20" stroke="#333" stroke-width="4"/>
+                        <line x1="130" y1="20" x2="130" y2="50" stroke="#333" stroke-width="2"/>
+                    </svg>
+                    <div class="hangman-display">
+                        <p>Attempts Left: <span id="wrong-count">0</span></p>
+                    </div>
+                </div>
+
+                <div class="game-section">
+                    <div class="question-display" id="question-display"></div>
+                    <div class="answer-input" id="answer-input-section">
+                        <input type="text" id="answer-input" placeholder="Type numeric answer" autocomplete="off" />
+                        <button id="submit-answer">Submit</button>
+                    </div>
+                    <div class="word-display" id="word-display" style="display:none;">
+                        <!-- Word will be displayed here -->
+                    </div>
+
+                    <div class="keyboard" id="keyboard">
+                        <!-- Keyboard buttons will be generated here -->
+                    </div>
+
+                    <div class="game-status" id="game-status"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Modal -->
+        <div class="modal" id="results-modal">
+            <div class="modal-content end-menu-content">
+                <h2 id="result-title" class="end-title">🎮 GAME OVER</h2>
+                
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <span class="result-label">Final Score</span>
+                        <span class="result-value" id="final-score">0</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="result-label">Time</span>
+                        <span class="result-value" id="final-time">0:00</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="result-label">Difficulty</span>
+                        <span class="result-value" id="final-difficulty">Normal</span>
+                    </div>
+                </div>
+                
+                <div class="result-message" id="result-message"></div>
+                
+                <div class="name-input-section">
+                    <label for="player-name">Enter your name:</label>
+                    <input type="text" id="player-name" placeholder="Your name..." maxlength="20">
+                </div>
+                
+                <div class="end-menu-buttons">
+                    <button class="end-menu-btn continue-btn" id="results-continue" style="display: none;">➡️ Continue</button>
+                    <button class="end-menu-btn play-again-btn" id="results-play-again">🔙 Back to Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

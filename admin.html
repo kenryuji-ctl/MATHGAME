@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body">
+    <div class="container admin-container">
+        <h1 class="menu-title admin-panel-title">Math Quiz Admin Panel</h1>
+        <div class="menu-content admin-login-card" style="max-width:420px;margin:0 auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <h2>Administrator Login</h2>
+                <button class="menu-btn menu-btn-secondary" onclick="backToGame()" style="padding: 8px 14px; font-size: .9rem;">Back to Game</button>
+            </div>
+            <input type="password" id="admin-password" placeholder="Enter admin password" class="menu-btn admin-input" style="width:100%;margin-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                <input type="checkbox" id="show-password-checkbox" onchange="toggleAdminPassword()" />
+                <label for="show-password-checkbox" style="font-size:.9rem; color:#34426e;">Show Password</label>
+            </div>
+            <button class="menu-btn" onclick="adminLogin()">Login</button>
+            <p id="login-error" class="error-text">Incorrect password.</p>
+        </div>
+        <div id="admin-panel" class="admin-panel-card" style="display:none;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <h2>Manage Questions</h2>
+                <button class="menu-btn menu-btn-secondary" onclick="backToGame()" style="padding: 8px 14px; font-size: .9rem;">Back to Game</button>
+            </div>
+            <div class="d-flex" style="margin-bottom:12px;align-items:center;gap:10px;">
+                <label for="difficulty-select" class="admin-label">Difficulty:</label>
+                <select id="difficulty-select" class="menu-btn admin-select" style="width:auto;">
+                    <option value="easy">Easy</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <input type="text" id="new-word" placeholder="Correct Answer" class="menu-btn admin-input" style="width:100%;margin-bottom:10px;">
+            <input type="text" id="new-hint" placeholder="Question" class="menu-btn admin-input" style="width:100%;margin-bottom:10px;">
+            <button class="menu-btn menu-btn-primary" onclick="addWord()">Add Question</button>
+            <div class="question-summary" style="margin-bottom:12px;">
+                <strong>Showing questions for difficulty: </strong>
+                <span id="current-difficulty" style="font-weight:700;color:#1a73e8;">Normal</span>
+            </div>
+            <ul id="word-list" class="admin-list"></ul>
+            <h2 style="margin-top:30px;">Leaderboard</h2>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <button class="menu-btn" onclick="loadLeaderboard()">Refresh Leaderboard</button>
+                <button class="menu-btn menu-btn-secondary" onclick="clearLeaderboardAdmin()">Clear Leaderboard</button>
+            </div>
+            <table id="leaderboard-table" style="width:100%;margin-top:10px;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#eee;"><th>Rank</th><th>Name</th><th>Score</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="admin.js"></script>
+</body>
+</html>
