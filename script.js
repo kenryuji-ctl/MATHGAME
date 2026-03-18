@@ -38,16 +38,19 @@ function getWordListByDifficulty(diff) {
         defaultList = normalMathQuestions;
     }
 
-    return [...savedForDiff, ...defaultList].map(q => ({ word: q.answer, hint: q.question }));
+    return [...savedForDiff, ...defaultList].map(q => ({ 
+        word: q.word || q.answer, 
+        hint: q.hint || q.question 
+    }));
 }
 
 function removeWordFromList(answer, diff) {
-    const allWords = getWordListByDifficulty(diff);
-    const idx = allWords.findIndex(w => w.word.toUpperCase() === answer.toUpperCase());
+    const persisted = JSON.parse(localStorage.getItem('hangmanWordsByDifficulty') || '{}');
+    if (!Array.isArray(persisted[diff])) return;
+    
+    const idx = persisted[diff].findIndex(w => w.word.toUpperCase() === answer.toUpperCase());
     if (idx !== -1) {
-        allWords.splice(idx, 1);
-        const persisted = JSON.parse(localStorage.getItem('hangmanWordsByDifficulty') || '{}');
-        persisted[diff] = allWords;
+        persisted[diff].splice(idx, 1);
         localStorage.setItem('hangmanWordsByDifficulty', JSON.stringify(persisted));
     }
 }
@@ -61,6 +64,9 @@ let timeRemaining = 60;
 let timerInterval = null;
 let currentScore = 0;
 let lastRoundScore = 0;
+let currentLevel = 1;
+let maxLevel = 0;
+let allLevelsComplete = false;
 let soundEnabled = true;
 let gameOver = false;
 let won = false;
@@ -118,10 +124,11 @@ document.querySelectorAll('.leaderboard-filter-btn').forEach(btn => {
 
 backBtn.addEventListener('click', goBackToMenu);
 resultsPlayAgain.addEventListener('click', () => {
-    if (gameOver && !won) {
+    if ((gameOver && !won) || allLevelsComplete) {
         const nameInput = (playerNameInput.value || '').trim();
         if (!nameInput) {
             // allow returning to menu without saving if no name entered
+            allLevelsComplete = false;
             goBackToMenu();
             return;
         }
@@ -136,16 +143,22 @@ resultsPlayAgain.addEventListener('click', () => {
 
         recordPlayerResult();
     }
+    allLevelsComplete = false;
     goBackToMenu();
 });
 resultsContinue.addEventListener('click', () => {
     // Continue only for winning, no immediate save on continue path
     resultsModal.classList.remove('show');
+    gameOver = false;
+    won = false;
+    timedOut = false;
+    allLevelsComplete = false;
+    answerInput.value = '';
+    answerInput.focus();
     startGame();
 });
 submitAnswerBtn.addEventListener('click', handleAnswerSubmit);
 answerInput.addEventListener('keypress', (event) => { if (event.key === 'Enter') handleAnswerSubmit(); });
-window.addEventListener('resize', renderMobileKeyboard);
 soundBtn.addEventListener('click', toggleSound);
 
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -172,6 +185,9 @@ window.addEventListener('click', (e) => {
 });
 
 function startGame() {
+    // Reload scoring config to get any admin changes
+    reloadScoringConfig();
+    
     menuScreen.style.display = 'none';
     gameScreen.style.display = 'block';
     initGame();
@@ -179,6 +195,8 @@ function startGame() {
 
 function goBackToMenu() {
     currentScore = 0;
+    currentLevel = 1;
+    allLevelsComplete = false;
     stopTimer();
     gameScreen.style.display = 'none';
     menuScreen.style.display = 'block';
@@ -186,19 +204,85 @@ function goBackToMenu() {
 }
 
 function initGame() {
-    const pool = getWordListByDifficulty(difficulty);
-    if (!pool.length) {
+    // Reload scoring config to get any admin changes
+    reloadScoringConfig();
+    
+    // Get admin-added questions with levels
+    const saved = JSON.parse(localStorage.getItem('hangmanWordsByDifficulty') || '{}');
+    const adminQuestions = (Array.isArray(saved[difficulty]) ? saved[difficulty] : []).map(q => ({ 
+        word: q.word, 
+        hint: q.hint,
+        level: q.level || 1
+    }));
+
+    // Get default questions (assign level based on position)
+    let defaultList = [];
+    if (difficulty === 'easy') {
+        defaultList = easyMathQuestions;
+    } else if (difficulty === 'hard') {
+        defaultList = hardMathQuestions;
+    } else {
+        defaultList = normalMathQuestions;
+    }
+    
+    // Find max level from admin questions to start default questions after
+    const maxAdminLevel = adminQuestions.length > 0 
+        ? Math.max(...adminQuestions.map(q => q.level)) 
+        : 0;
+    
+    const defaultQuestions = defaultList.map((q, idx) => ({ 
+        word: q.answer, 
+        hint: q.question,
+        level: maxAdminLevel + idx + 1
+    }));
+
+    // Combine all questions
+    let allQuestions = [...adminQuestions, ...defaultQuestions];
+    
+    // Sort by level to ensure they appear in order
+    allQuestions.sort((a, b) => a.level - b.level);
+    
+    // Find max level
+    maxLevel = Math.max(...allQuestions.map(q => q.level), 0);
+    
+    // Find questions at current level
+    let levelQuestions = allQuestions.filter(q => q.level === currentLevel);
+    
+    // Check if all levels are complete
+    if (levelQuestions.length === 0 && currentLevel > maxLevel) {
+        allLevelsComplete = true;
+        won = true;
+        gameOver = true;
+        stopTimer();
+        showResults();
+        return;
+    }
+    
+    // If no questions at this level, cycle back to level 1
+    if (levelQuestions.length === 0) {
+        currentLevel = 1;
+        levelQuestions = allQuestions.filter(q => q.level === currentLevel);
+    }
+    
+    if (!levelQuestions.length) {
         gameStatus.textContent = 'No questions available for this difficulty.';
         return;
     }
 
-    const selected = pool[Math.floor(Math.random() * pool.length)];
+    // Pick a random question from the current level
+    const selected = levelQuestions[Math.floor(Math.random() * levelQuestions.length)];
     currentQuestion = selected;
     currentAnswer = selected.word.toUpperCase();
 
     gameOver = false;
     won = false;
     timedOut = false;
+
+    // Display level in the UI
+    const levelDisplay = document.getElementById('level-display');
+    if (levelDisplay) {
+        levelDisplay.textContent = currentLevel;
+    }
 
     questionDisplay.textContent = selected.hint;
     scoreDisplay.textContent = currentScore;
@@ -221,50 +305,9 @@ function initGame() {
 
     answerInput.value = '';
     answerInput.focus();
-    renderMobileKeyboard();
 }
 
-function renderMobileKeyboard() {
-    const keyboard = document.getElementById('keyboard');
-    if (!keyboard) return;
 
-    if (window.innerWidth > 768) {
-        keyboard.style.display = 'none';
-        return;
-    }
-
-    keyboard.style.display = 'grid';
-    keyboard.innerHTML = '';
-
-    const keys = ['7','8','9','4','5','6','1','2','3','0','.','⌫'];
-    keys.forEach(k => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'keyboard-btn';
-        btn.textContent = k;
-
-        btn.addEventListener('click', () => {
-            if (k === '⌫') {
-                answerInput.value = answerInput.value.slice(0, -1);
-            } else {
-                // allow dot and digits only
-                if (k === '.' || /\d/.test(k)) {
-                    answerInput.value += k;
-                }
-            }
-            answerInput.focus();
-        });
-
-        keyboard.appendChild(btn);
-    });
-
-    const submitBtn = document.createElement('button');
-    submitBtn.type = 'button';
-    submitBtn.className = 'keyboard-btn keyboard-submit-btn';
-    submitBtn.textContent = 'Submit';
-    submitBtn.addEventListener('click', handleAnswerSubmit);
-    keyboard.appendChild(submitBtn);
-}
 
 function handleAnswerSubmit() {
     if (gameOver || !currentQuestion) return;
@@ -279,7 +322,8 @@ function handleAnswerSubmit() {
         won = true;
         gameOver = true;
         stopTimer();
-        gameStatus.textContent = '? Correct!';
+        currentLevel += 1; // Move to next level
+        gameStatus.textContent = '✓ Correct! Next Level...';
         gameStatus.className = 'status-win';
         calculateScore(true);
         showResults();
@@ -305,14 +349,18 @@ function handleAnswerSubmit() {
 
 function calculateScore(isWin) {
     stopTimer();
-    let baseScore = isWin ? 100 : 0;
-    let penalty = (maxWrong - remainingAttempts) * 10;
-    let timeBonus = Math.max(0, timeRemaining * 2);
-    let multiplier = 1;
-    if (difficulty === 'easy') multiplier = 0.8;
-    if (difficulty === 'hard') multiplier = 1.5;
+    
+    // Use the scoring configuration to calculate score
+    const scoreValue = calculateFinalScore({
+        isCorrect: isWin,
+        difficulty: difficulty,
+        timeRemaining: timeRemaining,
+        attemptsMade: maxWrong - remainingAttempts,
+        currentLevel: currentLevel,
+        correctStreak: 0
+    });
 
-    lastRoundScore = Math.max(0, Math.round((baseScore - penalty + timeBonus) * multiplier));
+    lastRoundScore = scoreValue;
     scoreDisplay.textContent = lastRoundScore;
 
     if (isWin) currentScore += lastRoundScore;
@@ -355,10 +403,14 @@ function showResults() {
         const finalDifficulty = document.getElementById('final-difficulty');
         const resultMessage = document.getElementById('result-message');
 
-        if (won) {
+        if (allLevelsComplete) {
+            resultTitle.textContent = '🏆 ALL LEVELS COMPLETE! 🏆';
+            resultTitle.style.color = '#FFD700';
+            resultMessage.textContent = `🎊 Congratulations! You've completed all ${maxLevel} levels on ${difficulty.toUpperCase()} difficulty! Amazing work! 🎊`;
+        } else if (won) {
             resultTitle.textContent = '🎉 YOU WON!';
             resultTitle.style.color = '#27ae60';
-            resultMessage.textContent = 'Correct! You answered the question successfully.';
+            resultMessage.textContent = `Level ${currentLevel - 1} Complete! Ready for Level ${currentLevel}?`;
         } else if (timedOut) {
             resultTitle.textContent = "⏳ TIME'S UP!";
             resultTitle.style.color = '#f39c12';
@@ -373,18 +425,33 @@ function showResults() {
         finalTime.textContent = timeRemaining > 0 ? `${timeRemaining}s left` : 'Time\'s Up!';
         finalDifficulty.textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
 
-        getStoredPlayerName(name => {
-            if (!won) {
+        try {
+            getStoredPlayerName(name => {
+                if (!won && !allLevelsComplete) {
+                    playerNameInput.value = '';
+                    playerNameInput.readOnly = false;
+                    playerNameInput.classList.remove('locked');
+                } else {
+                    setPlayerNameField('');
+                }
+            });
+        } catch (error) {
+            console.log('Error getting player name:', error);
+            if (!won && !allLevelsComplete) {
                 playerNameInput.value = '';
                 playerNameInput.readOnly = false;
                 playerNameInput.classList.remove('locked');
             } else {
-                setPlayerNameField('');
+                playerNameInput.value = '';
             }
-        });
+        }
 
         const nameSection = document.querySelector('.name-input-section');
-        if (won) {
+        if (allLevelsComplete) {
+            resultsContinue.style.display = 'none';
+            resultsPlayAgain.style.display = 'inline-block';
+            if (nameSection) nameSection.style.display = 'block';
+        } else if (won) {
             resultsContinue.style.display = 'inline-block';
             resultsPlayAgain.style.display = 'none';
             if (nameSection) nameSection.style.display = 'none';
@@ -547,10 +614,23 @@ function recordPlayerResult() {
 }
 
 function getStoredPlayerName(callback) {
-    const transaction = db.transaction(['settings'], 'readonly');
-    const objectStore = transaction.objectStore('settings');
-    const request = objectStore.get('playerName');
-    request.onsuccess = () => callback(request.result ? request.result.value : '');
+    try {
+        if (!db) {
+            callback('');
+            return;
+        }
+        const transaction = db.transaction(['settings'], 'readonly');
+        const objectStore = transaction.objectStore('settings');
+        const request = objectStore.get('playerName');
+        request.onsuccess = () => callback(request.result ? request.result.value : '');
+        request.onerror = () => {
+            console.log('Error getting player name from DB');
+            callback('');
+        };
+    } catch (error) {
+        console.log('IndexedDB error:', error);
+        callback('');
+    }
 }
 
 function getAllScores(cleanup = false, callback = null) {

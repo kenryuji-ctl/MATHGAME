@@ -2,9 +2,12 @@
 
 function adminLogin() {
     const password = document.getElementById("admin-password").value;
-    if (password === "admin123") {
+    const loginError = document.getElementById("login-error");
+    
+    if (password.toUpperCase() === "ADMIN123") {
         document.getElementById("admin-panel").style.display = "block";
         document.querySelector(".menu-content").style.display = "none";
+        loginError.style.display = "none";
         document.getElementById("difficulty-select").addEventListener("change", function() {
             loadWords();
             loadLeaderboard();
@@ -12,7 +15,7 @@ function adminLogin() {
         loadWords();
         loadLeaderboard();
     } else {
-        document.getElementById("login-error").style.display = "block";
+        loginError.style.display = "block";
     }
 }
 
@@ -43,6 +46,7 @@ function loadWords() {
 
     words.forEach((item, idx) => {
         const li = document.createElement("li");
+        const levelDisplay = item.level ? `<span style="color:#ff6b6b; font-weight:700;">Level ${item.level}</span>` : '<span style="color:#999;">No Level</span>';
         li.innerHTML = `
             <div class="question-card">
                 <div class="question-header">
@@ -50,10 +54,10 @@ function loadWords() {
                     <span class="difficulty-badge">${diff.toUpperCase()}</span>
                 </div>
                 <div class="answer-row"><span class="question-role">A:</span> ${item.word}</div>
+                <div class="answer-row">${levelDisplay}</div>
             </div>`;
 
         const delBtn = document.createElement("button");
-        delBtn.textContent = "Delete";
         delBtn.textContent = "Delete";
         delBtn.className = "menu-btn admin-delete-btn";
         delBtn.onclick = () => deleteWord(idx);
@@ -70,16 +74,20 @@ function loadWords() {
 function addWord() {
     const wordInput = document.getElementById("new-word");
     const hintInput = document.getElementById("new-hint");
+    const levelInput = document.getElementById("new-level");
     const diff = document.getElementById("difficulty-select").value;
     const word = wordInput.value.trim();
     const hint = hintInput.value.trim();
+    const level = parseInt(levelInput.value) || 1;
+    
     if (word && hint) {
         let wordsByDiff = getWordsByDifficulty();
         if (!wordsByDiff[diff]) wordsByDiff[diff] = [];
-        wordsByDiff[diff].push({ word, hint });
+        wordsByDiff[diff].push({ word, hint, level });
         saveWordsByDifficulty(wordsByDiff);
         wordInput.value = "";
         hintInput.value = "";
+        levelInput.value = "1";
         loadWords();
     } else {
         alert('Please enter both question and answer.');
@@ -198,3 +206,69 @@ function backToGame() {
         window.location.href = 'index.html';
     }
 }
+
+// ===================================
+// SCORING CONFIGURATION FUNCTIONS
+// ===================================
+
+function loadScoringConfig() {
+    // Load current scoring configuration into the form
+    document.getElementById('base-score-correct').value = SCORING_CONFIG.BASE_SCORE.correct;
+    document.getElementById('attempt-penalty').value = SCORING_CONFIG.ATTEMPT_PENALTY.perWrongAttempt;
+    document.getElementById('time-bonus').value = SCORING_CONFIG.TIME_BONUS.pointsPerSecond;
+    document.getElementById('level-multiplier').value = SCORING_CONFIG.LEVEL_MULTIPLIER.incrementPerLevel;
+    document.getElementById('multiplier-easy').value = SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.easy;
+    document.getElementById('multiplier-normal').value = SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.normal;
+    document.getElementById('multiplier-hard').value = SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.hard;
+    
+    // Display current scoring config as JSON
+    updateScoringPreview();
+}
+
+function saveScoringConfig() {
+    // Update the configuration values
+    SCORING_CONFIG.BASE_SCORE.correct = parseFloat(document.getElementById('base-score-correct').value) || 100;
+    SCORING_CONFIG.ATTEMPT_PENALTY.perWrongAttempt = parseFloat(document.getElementById('attempt-penalty').value) || 10;
+    SCORING_CONFIG.TIME_BONUS.pointsPerSecond = parseFloat(document.getElementById('time-bonus').value) || 2;
+    SCORING_CONFIG.LEVEL_MULTIPLIER.incrementPerLevel = parseFloat(document.getElementById('level-multiplier').value) || 0.1;
+    SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.easy = parseFloat(document.getElementById('multiplier-easy').value) || 0.8;
+    SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.normal = parseFloat(document.getElementById('multiplier-normal').value) || 1.0;
+    SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.hard = parseFloat(document.getElementById('multiplier-hard').value) || 1.5;
+    
+    // Save to localStorage
+    localStorage.setItem('scoringConfig', JSON.stringify(SCORING_CONFIG));
+    
+    updateScoringPreview();
+    alert('✅ Scoring configuration saved successfully!');
+}
+
+function updateScoringPreview() {
+    const preview = {
+        'Base Score (Correct)': SCORING_CONFIG.BASE_SCORE.correct,
+        'Attempt Penalty': SCORING_CONFIG.ATTEMPT_PENALTY.perWrongAttempt,
+        'Time Bonus (per sec)': SCORING_CONFIG.TIME_BONUS.pointsPerSecond,
+        'Level Multiplier Inc': SCORING_CONFIG.LEVEL_MULTIPLIER.incrementPerLevel,
+        'Difficulty Multipliers': {
+            'Easy': SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.easy,
+            'Normal': SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.normal,
+            'Hard': SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.hard
+        }
+    };
+    
+    document.getElementById('scoring-preview').textContent = JSON.stringify(preview, null, 2);
+}
+
+// Load scoring config when admin panel loads
+window.addEventListener('load', () => {
+    // Try to load saved config from localStorage
+    const saved = localStorage.getItem('scoringConfig');
+    if (saved) {
+        try {
+            const config = JSON.parse(saved);
+            Object.assign(SCORING_CONFIG, config);
+        } catch (e) {
+            console.log('Could not load saved scoring config');
+        }
+    }
+    updateScoringPreview();
+});

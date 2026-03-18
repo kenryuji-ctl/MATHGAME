@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangman Game</title>
+    <title>MATH GAME</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#764ba2">
@@ -92,6 +92,10 @@
                 
                 <div class="game-stats">
                     <div class="stat-item">
+                        <span class="stat-label">📍 Level:</span>
+                        <span class="stat-value" id="level-display">1</span>
+                    </div>
+                    <div class="stat-item">
                         <span class="stat-label">⏱️ Time:</span>
                         <span class="stat-value" id="timer">30</span>
                     </div>
@@ -118,15 +122,11 @@
                 <div class="game-section">
                     <div class="question-display" id="question-display"></div>
                     <div class="answer-input" id="answer-input-section">
-                        <input type="text" id="answer-input" placeholder="Type numeric answer" autocomplete="off" />
+                        <input type="text" id="answer-input" placeholder="Type your answer" autocomplete="off" />
                         <button id="submit-answer">Submit</button>
                     </div>
                     <div class="word-display" id="word-display" style="display:none;">
                         <!-- Word will be displayed here -->
-                    </div>
-
-                    <div class="keyboard" id="keyboard">
-                        <!-- Keyboard buttons will be generated here -->
                     </div>
 
                     <div class="game-status" id="game-status"></div>
@@ -169,6 +169,7 @@
         </div>
     </div>
 
+    <script src="scoring-config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

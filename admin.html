@@ -35,6 +35,7 @@
                     <option value="hard">Hard</option>
                 </select>
             </div>
+            <input type="number" id="new-level" placeholder="Question Level (1, 2, 3...)" class="menu-btn admin-input" style="width:100%;margin-bottom:10px;" min="1" value="1">
             <input type="text" id="new-word" placeholder="Correct Answer" class="menu-btn admin-input" style="width:100%;margin-bottom:10px;">
             <input type="text" id="new-hint" placeholder="Question" class="menu-btn admin-input" style="width:100%;margin-bottom:10px;">
             <button class="menu-btn menu-btn-primary" onclick="addWord()">Add Question</button>
@@ -54,8 +55,52 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            
+            <h2 style="margin-top:30px;">Scoring System Configuration</h2>
+            <div style="background:#f0f4ff; padding:15px; border-radius:8px; margin-bottom:15px;">
+                <div style="margin-bottom:15px;">
+                    <label class="admin-label">Base Score (Correct Answer):</label>
+                    <input type="number" id="base-score-correct" class="menu-btn admin-input" style="width:100%;margin-bottom:8px;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label class="admin-label">Attempt Penalty (per wrong attempt):</label>
+                    <input type="number" id="attempt-penalty" class="menu-btn admin-input" style="width:100%;margin-bottom:8px;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label class="admin-label">Time Bonus (points per second - hard only):</label>
+                    <input type="number" id="time-bonus" class="menu-btn admin-input" style="width:100%;margin-bottom:8px;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label class="admin-label">Level Multiplier Increment (per level):</label>
+                    <input type="number" id="level-multiplier" class="menu-btn admin-input" step="0.1" style="width:100%;margin-bottom:8px;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label class="admin-label">Difficulty Multipliers:</label>
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                        <div>
+                            <label style="font-size:0.9em;">Easy:</label>
+                            <input type="number" id="multiplier-easy" class="menu-btn admin-input" step="0.1" style="width:100%;">
+                        </div>
+                        <div>
+                            <label style="font-size:0.9em;">Normal:</label>
+                            <input type="number" id="multiplier-normal" class="menu-btn admin-input" step="0.1" style="width:100%;">
+                        </div>
+                        <div>
+                            <label style="font-size:0.9em;">Hard:</label>
+                            <input type="number" id="multiplier-hard" class="menu-btn admin-input" step="0.1" style="width:100%;">
+                        </div>
+                    </div>
+                </div>
+                <button class="menu-btn menu-btn-primary" onclick="loadScoringConfig()" style="width:100%;margin-bottom:8px;">📋 Load Current Config</button>
+                <button class="menu-btn" onclick="saveScoringConfig()" style="width:100%;">💾 Save Scoring Config</button>
+            </div>
+            <div id="scoring-display" style="background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid #1a73e8;">
+                <h3 style="margin-top:0;color:#1a73e8;">Current Scoring Settings:</h3>
+                <pre id="scoring-preview" style="font-size:0.9em; max-height:200px; overflow-y:auto;"></pre>
+            </div>
         </div>
     </div>
+    <script src="scoring-config.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>
