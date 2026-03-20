@@ -14,6 +14,77 @@ body {
     padding: 20px;
 }
 
+/* Loading Screen Styles */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #1d50e9 0%, #171be6 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-container {
+    text-align: center;
+    color: white;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top: 5px solid white;
+    border-radius: 50%;
+    margin: 0 auto 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.loading-container h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.loading-text {
+    font-size: 1.1em;
+    opacity: 0.9;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 0.5; }
+}
+
 .container {
     width: 100%;
     max-width: 900px;
@@ -441,6 +512,38 @@ body {
 }
 
 .sound-btn.muted {
+    background: #e74c3c;
+    opacity: 0.7;
+}
+
+.audio-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.music-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    min-width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.music-btn:hover {
+    background: #764ba2;
+    transform: scale(1.1);
+}
+
+.music-btn.muted {
     background: #e74c3c;
     opacity: 0.7;
 }

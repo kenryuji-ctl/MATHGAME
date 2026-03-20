@@ -61,7 +61,7 @@ function reloadScoringConfig() {
             SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.hard = loadedConfig.DIFFICULTY_MULTIPLIERS?.hard ?? SCORING_CONFIG.DIFFICULTY_MULTIPLIERS.hard;
             SCORING_CONFIG.LEVEL_MULTIPLIER.incrementPerLevel = loadedConfig.LEVEL_MULTIPLIER?.incrementPerLevel ?? SCORING_CONFIG.LEVEL_MULTIPLIER.incrementPerLevel;
         } catch (e) {
-            console.log('Could not load saved scoring config, using defaults');
+            console.error('Error loading scoring config:', e);
         }
     }
 }

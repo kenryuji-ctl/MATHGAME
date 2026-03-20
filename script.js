@@ -1,20 +1,66 @@
 // Math Quiz Script
 
 const easyMathQuestions = [
-    { question: 'Easy: What is 2 + 2?', answer: '4' },
-    { question: 'Easy: What is 10 - 7?', answer: '3' },
-    { question: 'Easy: What is 6 / 2?', answer: '3' },
-    { question: 'Easy: What is the square root of 9?', answer: '3' },
-    { question: 'Easy: What is 4 + 5?', answer: '9' },
-    { question: 'Easy: What is 8 - 3?', answer: '5' }
+    { question: 'Identify the next number in the sequence 3,6,12,24,__', answer: '48' },
+    { question: 'What is the value of x? x+5=12', answer: '7' },
+    { question: 'Which statement is true? 2x+3=7(when x=2),x-2=5(when x=3)', answer: '2x+3=7' },
+    { question: 'If x+5=11,what is the value of x?', answer: '6' },
+    { question: 'if a bakery sells 250 loaves of bread at 20 each,how much money does it make?', answer: '5000' },
+    { question: '3x^2+2x-5=? (when x=2)', answer: '11' },
+    { question: '(2x+5)+(x-3)', answer: '3x+2' },
+    { question: 'If a car travels 250km in 5hrs what is its average speed', answer: '50km/h' },
+    { question: 'A shirt is on sale for 400 which is 20% of its original price,what was the original price?', answer: '500' },
+    { question: 'A group of friends want to split a 1,200 bill evenly,If there are 8 friends how much will each pay?', answer: '150' },
+    { question: '2x+5=11,What is x?', answer: '3' },
+    { question: 'If a pencil cost 10,how much do 5 pencil cost?', answer: '50' },
+    { question: 'What is 2/4 + 1/4?', answer: '3/4' },
+    { question: 'Solve for x:x^2=4x-5=0', answer: '1' },
+    { question: 'If a car travels 320 km in 4 hours,what is it average speed?', answer: '80km/h' },
+    { question: 'Solve the equation:3x^2-2x-5=0', answer: '-1' }
 ];
 
 const normalMathQuestions = [
-    { question: 'Normal: What is 5 x 3?', answer: '15' },
-    { question: 'Normal: What is 7 + 8?', answer: '15' },
-    { question: 'Normal: What is 12 / 4?', answer: '3' },
-    { question: 'Normal: What is 9 x 2?', answer: '18' },
-    { question: 'Normal: What is 11 - 4?', answer: '7' }
+    //basic
+    { question: 'f(x)=2x+3 find f(1)', answer: '5' },
+    { question: 'f(x)=2x+3 find f(4)', answer: '11' },
+    { question: 'g(X)=X^2 find g(3)', answer: '9' },
+    { question: 'g(x)=x^2 find g(-2)', answer: '4' },
+    { question: 'h(x)=5x-1 find h(2)', answer: '9' },
+    { question: 'h(x)=5x+1 find h(0)', answer: '-1' },
+    { question: 'f(x)=x+7 find f(5)', answer: '12' },
+    { question: 'f(x)=x+7 find f(-3)', answer: '4' },
+    { question: 'g(x)=4x, find g(6)', answer: '24' },
+    { question: 'g(x)=4x find g(-2)', answer: '-8' },
+    { question: 'f(x)=3x find f(10)', answer: '30' },
+    { question: 'g(x)=x+1 find g(0)', answer: '1' },
+    { question: 'h(x)=2x-5 find h(3)', answer: '1' },
+    { question: 'f(x)=x+4 find f(9)', answer: '5' },
+    { question: 'g(x)=6x find g(2)', answer: '12' },
+    //intermidiate
+    { question: 'f(x)=3x^2+2x find f(2)', answer: '16' },
+    { question: 'f(x)=3^2+2x find f(-1)', answer: '1' },
+    { question: 'g(x)=(2+1)/x find g(1)', answer: '3' },
+    { question: 'g(x)=(2+1)/x find g(2)', answer: '5/2' },
+    { question: 'h(x)square root of(x+9) find h(7)', answer: '4' },
+    { question: 'h(x)square root of(x+9) find h(16) ', answer: '5' },
+    { question: 'f(x)=x^2-4x+1 find f(3)', answer: '-2' },
+    { question: 'f(x)=x^2-4x+1 find f(-2)', answer: '13' },
+    { question: 'g(x)=5-2x find g(4)', answer: '-3' },
+    { question: 'g(x)=5-2x find g(-3)', answer: '11' },
+    { question: 'f(x)2x^2+x find f(3)', answer: '21' },
+    { question: 'g(x)=(x+3)/2 find g(5)', answer: '4' },
+    { question: 'h(x)square root of(3x+1) find h(3)', answer: 'square root of 10' },
+    { question: 'f(x)=x^2+6x find f(-3)', answer: '-9' },
+    { question: 'g(x)=7x-4 find g(2)', answer: '10' },
+    //advanced
+    { question: 'f(x)=x^3-2x find f(2)', answer: '4' },
+    { question: 'f(x)=x^3-2x find f(-2)', answer: '-4' },
+    { question: 'g(x)=(x^2-1)/(x-1) find g(3)', answer: '4' },
+    { question: 'g(x)=(x^2-1)/(x-1) find g(-1)', answer: '0' },
+    { question: 'f(x)=1/(x+3) find f(1)', answer: '1/4' },
+    { question: 'f(x)=1/(x+3) find f(-3)', answer: '3' },
+    { question: 'Normal: What is 9 x 2?', answer: 'undenifined' },
+    { question: 'g(x)=square root of(2x-1) find g(5)', answer: '3' }
 ];
 
 const hardMathQuestions = [
@@ -22,38 +68,18 @@ const hardMathQuestions = [
     { question: 'Hard: What is 7 x 6?', answer: '42' },
     { question: 'Hard: What is 12 x 12?', answer: '144' },
     { question: 'Hard: What is 15 x 15?', answer: '225' },
-    { question: 'Hard: What is 19 + 23?', answer: '42' }
+    { question: 'Hard: What is 19 + 23?', answer: '42' },
+    { question: 'Normal: What is 5 x 3?', answer: '15' },
+    { question: 'Normal: What is 7 + 8?', answer: '15' },
+    { question: 'Normal: What is 12 / 4?', answer: '3' },
+    { question: 'Normal: What is 9 x 2?', answer: '18' },
+    { question: 'Normal: What is 11 - 4?', answer: '7' },
+    { question: 'Normal: What is 5 x 3?', answer: '15' },
+    { question: 'Normal: What is 7 + 8?', answer: '15' },
+    { question: 'Normal: What is 12 / 4?', answer: '3' },
+    { question: 'Normal: What is 9 x 2?', answer: '18' },
+    { question: 'Normal: What is 11 - 4?', answer: '7' }
 ];
-
-function getWordListByDifficulty(diff) {
-    const saved = JSON.parse(localStorage.getItem('hangmanWordsByDifficulty') || '{}');
-    const savedForDiff = Array.isArray(saved[diff]) ? saved[diff] : [];
-    let defaultList = [];
-
-    if (diff === 'easy') {
-        defaultList = easyMathQuestions;
-    } else if (diff === 'hard') {
-        defaultList = hardMathQuestions;
-    } else {
-        defaultList = normalMathQuestions;
-    }
-
-    return [...savedForDiff, ...defaultList].map(q => ({ 
-        word: q.word || q.answer, 
-        hint: q.hint || q.question 
-    }));
-}
-
-function removeWordFromList(answer, diff) {
-    const persisted = JSON.parse(localStorage.getItem('hangmanWordsByDifficulty') || '{}');
-    if (!Array.isArray(persisted[diff])) return;
-    
-    const idx = persisted[diff].findIndex(w => w.word.toUpperCase() === answer.toUpperCase());
-    if (idx !== -1) {
-        persisted[diff].splice(idx, 1);
-        localStorage.setItem('hangmanWordsByDifficulty', JSON.stringify(persisted));
-    }
-}
 
 let currentQuestion = null;
 let currentAnswer = '';
@@ -72,6 +98,27 @@ let gameOver = false;
 let won = false;
 let timedOut = false;
 let leaderboardFilter = 'all';
+let currentLeaderboardType = 'online';
+
+// ===================================
+// LOADING SCREEN FUNCTIONS
+// ===================================
+
+function showLoadingScreen(message = 'Loading...') {
+    const loadingScreen = document.getElementById('loading-screen');
+    const loadingText = document.querySelector('.loading-text');
+    if (loadingScreen) {
+        loadingScreen.classList.remove('hidden');
+        if (loadingText) loadingText.textContent = message;
+    }
+}
+
+function hideLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+        loadingScreen.classList.add('hidden');
+    }
+}
 
 const menuScreen = document.getElementById('menu-screen');
 const gameScreen = document.getElementById('game-screen');
@@ -94,41 +141,110 @@ const resultsModal = document.getElementById('results-modal');
 const resultsPlayAgain = document.getElementById('results-play-again');
 const resultsContinue = document.getElementById('results-continue');
 const soundBtn = document.getElementById('sound-btn');
+const musicBtn = document.getElementById('music-btn');
+const bgMusic = document.getElementById('bg-music');
 const leaderboardBtn = document.getElementById('leaderboard-btn');
 const leaderboardModal = document.getElementById('leaderboard-modal');
 const closeLeaderboardBtn = document.getElementById('close-leaderboard');
 const clearLeaderboardMenuBtn = document.getElementById('clear-leaderboard-menu');
 const playerNameInput = document.getElementById('player-name');
 
-playBtn.addEventListener('click', startGame);
-rulesBtn.addEventListener('click', () => rulesModal.classList.add('show'));
-difficultyBtn.addEventListener('click', () => difficultyModal.classList.add('show'));
-closeRulesBtn.addEventListener('click', () => rulesModal.classList.remove('show'));
-closeDifficultyBtn.addEventListener('click', () => difficultyModal.classList.remove('show'));
-leaderboardBtn.addEventListener('click', showLeaderboard);
-closeLeaderboardBtn.addEventListener('click', () => leaderboardModal.classList.remove('show'));
-clearLeaderboardMenuBtn.addEventListener('click', clearPlayerName);
+playBtn.addEventListener('click', () => {
+    playSound('click');
+    startGame();
+});
+rulesBtn.addEventListener('click', () => {
+    playSound('click');
+    rulesModal.classList.add('show');
+});
+difficultyBtn.addEventListener('click', () => {
+    playSound('click');
+    difficultyModal.classList.add('show');
+});
+closeRulesBtn.addEventListener('click', () => {
+    playSound('click');
+    rulesModal.classList.remove('show');
+});
+closeDifficultyBtn.addEventListener('click', () => {
+    playSound('click');
+    difficultyModal.classList.remove('show');
+});
+leaderboardBtn.addEventListener('click', () => {
+    playSound('click');
+    showLeaderboard();
+});
+closeLeaderboardBtn.addEventListener('click', () => {
+    playSound('click');
+    leaderboardModal.classList.remove('show');
+});
+clearLeaderboardMenuBtn.addEventListener('click', () => {
+    playSound('click');
+    clearPlayerName();
+});
 
 // Add event listeners for leaderboard difficulty filter buttons
+// Leaderboard type toggle
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('leaderboard-type-btn')) {
+        playSound('click');
+        currentLeaderboardType = e.target.dataset.type;
+        
+        // Update button styles
+        document.querySelectorAll('.leaderboard-type-btn').forEach(b => {
+            b.classList.remove('active');
+            b.style.background = 'white';
+            b.style.color = '#333';
+            b.style.borderColor = '#999';
+        });
+        e.target.classList.add('active');
+        e.target.style.background = '#1a73e8';
+        e.target.style.color = 'white';
+        e.target.style.borderColor = '#1a73e8';
+        
+        // Switch leaderboard view
+        document.getElementById('online-leaderboard').style.display = currentLeaderboardType === 'online' ? 'block' : 'none';
+        document.getElementById('offline-leaderboard').style.display = currentLeaderboardType === 'offline' ? 'block' : 'none';
+    }
+});
+
+// Leaderboard difficulty filters
 document.querySelectorAll('.leaderboard-filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
+        playSound('click');
         // Remove active class from all buttons
         document.querySelectorAll('.leaderboard-filter-btn').forEach(b => b.classList.remove('active'));
         // Add active class to clicked button
         e.target.classList.add('active');
-        // Update filter and refresh leaderboard
+        // Update filter and refresh both leaderboards
         leaderboardFilter = e.target.getAttribute('data-difficulty');
-        showLeaderboard();
+        loadOnlineLeaderboard();
+        loadOfflineLeaderboard();
     });
 });
 
-backBtn.addEventListener('click', goBackToMenu);
+backBtn.addEventListener('click', () => {
+    playSound('click');
+    goBackToMenu();
+});
+
+// Allow pressing Escape to go back to menu, Enter only when not in answer field
+document.addEventListener('keydown', (event) => {
+    // Check if user is typing in the answer input field
+    const isAnswerInputFocused = document.activeElement === answerInput;
+    
+    if (event.key === 'Escape' || (event.key === 'Enter' && gameScreen.style.display !== 'none' && !resultsModal.classList.contains('show') && !isAnswerInputFocused)) {
+        playSound('click');
+        goBackToMenu();
+    }
+});
 resultsPlayAgain.addEventListener('click', () => {
+    playSound('click');
     if ((gameOver && !won) || allLevelsComplete) {
         const nameInput = (playerNameInput.value || '').trim();
         if (!nameInput) {
             // allow returning to menu without saving if no name entered
             allLevelsComplete = false;
+            currentLevel = 1; // Reset level on game over
             goBackToMenu();
             return;
         }
@@ -144,9 +260,11 @@ resultsPlayAgain.addEventListener('click', () => {
         recordPlayerResult();
     }
     allLevelsComplete = false;
+    currentLevel = 1; // Reset level on game over
     goBackToMenu();
 });
 resultsContinue.addEventListener('click', () => {
+    playSound('click');
     // Continue only for winning, no immediate save on continue path
     resultsModal.classList.remove('show');
     gameOver = false;
@@ -157,15 +275,32 @@ resultsContinue.addEventListener('click', () => {
     answerInput.focus();
     startGame();
 });
-submitAnswerBtn.addEventListener('click', handleAnswerSubmit);
-answerInput.addEventListener('keypress', (event) => { if (event.key === 'Enter') handleAnswerSubmit(); });
-soundBtn.addEventListener('click', toggleSound);
+submitAnswerBtn.addEventListener('click', () => {
+    playSound('click');
+    handleAnswerSubmit();
+});
+
+// Answer input - support both button click and Enter key
+document.getElementById('answer-input').addEventListener('keypress', (event) => { if (event.key === 'Enter') handleAnswerSubmit(); });
+
+soundBtn.addEventListener('click', () => {
+    playSound('click');
+    toggleSound();
+});
+
+musicBtn.addEventListener('click', () => {
+    playSound('click');
+    toggleMusic();
+});
 
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+        playSound('click');
         document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         difficulty = btn.dataset.difficulty;
+        currentScore = 0; // Reset score when changing difficulty
+        currentLevel = 1; // Reset to level 1 when changing difficulty
 
         switch (difficulty) {
             case 'easy': maxWrong = 6; break;
@@ -185,23 +320,54 @@ window.addEventListener('click', (e) => {
 });
 
 function startGame() {
+    // Show loading screen
+    showLoadingScreen('Starting Game...');
+    
     // Reload scoring config to get any admin changes
     reloadScoringConfig();
     
-    menuScreen.style.display = 'none';
-    gameScreen.style.display = 'block';
-    initGame();
+    setTimeout(() => {
+        menuScreen.style.display = 'none';
+        gameScreen.style.display = 'block';
+        
+        // Start music if enabled
+        const musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
+        if (musicEnabled && bgMusic.paused) {
+            bgMusic.play().catch(err => console.log('Music autoplay prevented:', err));
+            musicBtn.classList.remove('muted');
+        }
+        
+        initGame();
+        
+        // Hide loading screen after game starts
+        setTimeout(() => {
+            hideLoadingScreen();
+        }, 300);
+    }, 400);
 }
 
 function goBackToMenu() {
-    currentScore = 0;
-    currentLevel = 1;
+    // Show loading screen
+    showLoadingScreen('Returning to Menu...');
+    
+    // Keep score persistent when returning to menu
+    // Don't reset level - only reset on game over
     allLevelsComplete = false;
     stopTimer();
-    gameScreen.style.display = 'none';
-    menuScreen.style.display = 'block';
-    resultsModal.classList.remove('show');
+    
+    setTimeout(() => {
+        gameScreen.style.display = 'none';
+        menuScreen.style.display = 'block';
+        resultsModal.classList.remove('show');
+        
+        // Pause music when returning to menu
+        bgMusic.pause();
+        
+        // Hide loading screen
+        hideLoadingScreen();
+    }, 300);
 }
+
 
 function initGame() {
     // Reload scoring config to get any admin changes
@@ -210,9 +376,10 @@ function initGame() {
     // Get admin-added questions with levels
     const saved = JSON.parse(localStorage.getItem('hangmanWordsByDifficulty') || '{}');
     const adminQuestions = (Array.isArray(saved[difficulty]) ? saved[difficulty] : []).map(q => ({ 
-        word: q.word, 
-        hint: q.hint,
-        level: q.level || 1
+        word: q.word || '',
+        hint: q.hint || '', 
+        level: q.level ? parseInt(q.level) : 1,  // Ensure level is always a number, default to 1
+        word2: q.word2 || null
     }));
 
     // Get default questions (assign level based on position)
@@ -227,23 +394,25 @@ function initGame() {
     
     // Find max level from admin questions to start default questions after
     const maxAdminLevel = adminQuestions.length > 0 
-        ? Math.max(...adminQuestions.map(q => q.level)) 
+        ? Math.max(...adminQuestions.map(q => q.level || 1))  // Ensure level is always a number
         : 0;
     
     const defaultQuestions = defaultList.map((q, idx) => ({ 
         word: q.answer, 
         hint: q.question,
-        level: maxAdminLevel + idx + 1
+        level: (maxAdminLevel || 0) + idx + 1  // Ensure maxAdminLevel is never NaN
     }));
 
     // Combine all questions
     let allQuestions = [...adminQuestions, ...defaultQuestions];
     
     // Sort by level to ensure they appear in order
-    allQuestions.sort((a, b) => a.level - b.level);
+    allQuestions.sort((a, b) => (a.level || 1) - (b.level || 1));
     
-    // Find max level
-    maxLevel = Math.max(...allQuestions.map(q => q.level), 0);
+    // Find max level - handle empty array safely
+    maxLevel = allQuestions.length > 0 
+        ? Math.max(...allQuestions.map(q => q.level || 1))
+        : 0;
     
     // Find questions at current level
     let levelQuestions = allQuestions.filter(q => q.level === currentLevel);
@@ -271,8 +440,16 @@ function initGame() {
 
     // Pick a random question from the current level
     const selected = levelQuestions[Math.floor(Math.random() * levelQuestions.length)];
+    
+    if (!selected) {
+        gameStatus.textContent = 'Error loading question. Please refresh the page.';
+        return;
+    }
+    
     currentQuestion = selected;
-    currentAnswer = selected.word.toUpperCase();
+    currentAnswer = (selected.word || '').toUpperCase();
+    // Store alternative answer if it exists
+    currentQuestion.altAnswer = (selected.word2 ? selected.word2.toUpperCase() : null);
 
     gameOver = false;
     won = false;
@@ -284,13 +461,13 @@ function initGame() {
         levelDisplay.textContent = currentLevel;
     }
 
-    questionDisplay.textContent = selected.hint;
+    questionDisplay.textContent = selected.hint || 'Question not loaded';
     scoreDisplay.textContent = currentScore;
     gameStatus.textContent = '';
     gameStatus.className = '';
 
     remainingAttempts = maxWrong;
-    wrongCount.textContent = remainingAttempts;
+    updateWrongCountDisplay();
 
     const timerStatItem = timerDisplay.parentElement;
     if (difficulty === 'hard') {
@@ -303,8 +480,12 @@ function initGame() {
         stopTimer();
     }
 
-    answerInput.value = '';
-    answerInput.focus();
+    // Get input element fresh to ensure it's available
+    const inputSectionElement = document.getElementById('answer-input');
+    if (inputSectionElement) {
+        inputSectionElement.value = '';
+        inputSectionElement.focus();
+    }
 }
 
 
@@ -312,39 +493,60 @@ function initGame() {
 function handleAnswerSubmit() {
     if (gameOver || !currentQuestion) return;
 
-    const userAnswer = (answerInput.value || '').trim();
+    const inputElement = document.getElementById('answer-input');
+    if (!inputElement) {
+        console.error('Answer input element not found!');
+        gameStatus.textContent = '❌ Error: Input field not found!';
+        return;
+    }
+    
+    const userAnswer = (inputElement.value || '').trim();
+    
     if (!userAnswer) {
-        gameStatus.textContent = 'Please enter your answer.';
+        gameStatus.textContent = '⚠️ Please enter your answer to continue.';
+        gameStatus.className = 'status-warn';
         return;
     }
 
-    if (userAnswer.toUpperCase() === currentAnswer) {
+    if (userAnswer.toUpperCase() === currentAnswer || (currentQuestion.altAnswer && userAnswer.toUpperCase() === currentQuestion.altAnswer)) {
         won = true;
-        gameOver = true;
         stopTimer();
         currentLevel += 1; // Move to next level
         gameStatus.textContent = '✓ Correct! Next Level...';
         gameStatus.className = 'status-win';
         calculateScore(true);
-        showResults();
+        
+        // Auto-load next question after a brief delay
+        setTimeout(() => {
+            won = false;
+            gameOver = false;
+            inputElement.value = '';
+            inputElement.focus();
+            initGame();
+        }, 1000);
     } else {
         remainingAttempts -= 1;
-        wrongCount.textContent = remainingAttempts;
+        updateWrongCountDisplay();
 
         if (remainingAttempts <= 0) {
             gameOver = true;
             stopTimer();
-            gameStatus.textContent = '? No attempts left!';
+            gameStatus.textContent = '❌ No attempts left! Game Over!';
             gameStatus.className = 'status-lose';
             calculateScore(false);
             showResults();
         } else {
-            gameStatus.textContent = `Wrong answer. ${remainingAttempts} attempt(s) left.`;
+            gameStatus.textContent = `❌ Wrong! Your answer: "${userAnswer}" • ${remainingAttempts} attempt(s) remaining`;
             gameStatus.className = 'status-warn';
+            inputElement.value = '';
+            inputElement.focus();
         }
     }
+}
 
-    answerInput.value = '';
+function updateWrongCountDisplay() {
+    const wrongAttempts = maxWrong - remainingAttempts;
+    wrongCount.textContent = `${wrongAttempts}/${maxWrong}`;
 }
 
 function calculateScore(isWin) {
@@ -379,8 +581,7 @@ function startCountdown() {
             stopTimer();
             timedOut = true;
             gameOver = true;
-            removeWordFromList(currentAnswer, difficulty);
-            gameStatus.textContent = '?? Time\'s Up! Game Over!';
+            gameStatus.textContent = '⏳ Time\'s Up! Game Over!';
             gameStatus.className = 'status-lose';
             calculateScore(false);
             showResults();
@@ -436,7 +637,7 @@ function showResults() {
                 }
             });
         } catch (error) {
-            console.log('Error getting player name:', error);
+            console.error('Error getting player name:', error);
             if (!won && !allLevelsComplete) {
                 playerNameInput.value = '';
                 playerNameInput.readOnly = false;
@@ -469,6 +670,19 @@ function toggleSound() {
     soundEnabled = !soundEnabled;
     soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
     soundBtn.classList.toggle('muted', !soundEnabled);
+}
+
+function toggleMusic() {
+    const musicEnabled = bgMusic.paused;
+    if (musicEnabled) {
+        bgMusic.play().catch(err => console.log('Music autoplay prevented:', err));
+        musicBtn.classList.remove('muted');
+        localStorage.setItem('musicEnabled', 'true');
+    } else {
+        bgMusic.pause();
+        musicBtn.classList.add('muted');
+        localStorage.setItem('musicEnabled', 'false');
+    }
 }
 
 function playSound(type) {
@@ -509,9 +723,15 @@ function playSound(type) {
                 osc.start(audioContext.currentTime + index * 0.1);
                 osc.stop(audioContext.currentTime + index * 0.1 + 0.2);
             });
+        } else if (type === 'click') {
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
         }
     } catch (e) {
-        console.log('Audio context not available');
+        console.error('Audio context error:', e);
     }
 }
 
@@ -566,8 +786,8 @@ function saveScore(playerName) {
     const transaction = db.transaction(['scores'], 'readwrite');
     const objectStore = transaction.objectStore('scores');
     const request = objectStore.add(newScore);
-    request.onerror = () => console.log('Error saving score');
-    request.onsuccess = () => { getAllScores(true); };
+    request.onerror = () => console.error('Error saving score to IndexedDB');
+    request.onsuccess = () => getAllScores(true);
 
     const diffKey = difficulty.toLowerCase();
     let allBoards = JSON.parse(localStorage.getItem('hangmanLeaderboardByDifficulty') || '{}');
@@ -576,6 +796,11 @@ function saveScore(playerName) {
     allBoards[diffKey].push({ name: playerName, score: currentScore });
     allBoards[diffKey] = allBoards[diffKey].sort((a, b) => b.score - a.score).slice(0, 50);
     localStorage.setItem('hangmanLeaderboardByDifficulty', JSON.stringify(allBoards));
+
+    // Also save to Firebase for cross-device syncing
+    if (typeof saveScoreToFirebase === 'function') {
+        saveScoreToFirebase(playerName, currentScore, difficulty);
+    }
 
     return true;
 }
@@ -623,12 +848,9 @@ function getStoredPlayerName(callback) {
         const objectStore = transaction.objectStore('settings');
         const request = objectStore.get('playerName');
         request.onsuccess = () => callback(request.result ? request.result.value : '');
-        request.onerror = () => {
-            console.log('Error getting player name from DB');
-            callback('');
-        };
+        request.onerror = () => callback('');
     } catch (error) {
-        console.log('IndexedDB error:', error);
+        console.error('IndexedDB error:', error);
         callback('');
     }
 }
@@ -656,35 +878,127 @@ function getAllScores(cleanup = false, callback = null) {
 
 function showLeaderboard() {
     leaderboardModal.classList.add('show');
-    const table = document.getElementById('leaderboard-table');
+    
+    // Currently showing offline leaderboard only
+    currentLeaderboardType = 'offline';
+    document.getElementById('online-leaderboard').style.display = 'none';
+    document.getElementById('offline-leaderboard').style.display = 'block';
+    
+    // Load only offline leaderboard (online is hidden temporarily)
+    loadOfflineLeaderboard();
+}
 
-    getAllScores(false, (leaderboard) => {
-        // Filter by selected difficulty
-        let filteredLeaderboard = leaderboard;
-        if (leaderboardFilter !== 'all') {
-            filteredLeaderboard = leaderboard.filter(entry => entry.difficulty.toLowerCase() === leaderboardFilter.toLowerCase());
-        }
-
-        if (filteredLeaderboard.length === 0) {
-            table.innerHTML = '<div class="leaderboard-empty">No scores yet. Play a game to get on the leaderboard!</div>';
-            return;
-        }
-
-        let html = '<div class="leaderboard-row header"><div class="leaderboard-rank">Rank</div><div class="leaderboard-name">Player</div><div class="leaderboard-score">Score</div><div class="leaderboard-difficulty">Difficulty</div><div class="leaderboard-date">Date</div></div>';
-
-        filteredLeaderboard.slice(0, 20).forEach((entry, index) => {
-            const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
-            html += '<div class="leaderboard-row">' +
-                    `<div class="leaderboard-rank">${medal} ${index + 1}</div>` +
-                    `<div class="leaderboard-name">${entry.name}</div>` +
-                    `<div class="leaderboard-score">${entry.score}</div>` +
-                    `<div class="leaderboard-difficulty">${entry.difficulty}</div>` +
-                    `<div class="leaderboard-date">${entry.date}</div>` +
-                    '</div>';
+function loadOnlineLeaderboard() {
+    const table = document.getElementById('leaderboard-table-online');
+    
+    if (!isFirebaseReady) {
+        table.innerHTML = '<div class="leaderboard-empty">Firebase not configured. See FIREBASE_SETUP.md for setup instructions.</div>';
+        return;
+    }
+    
+    table.innerHTML = '<div class="leaderboard-empty">Loading online scores...</div>';
+    
+    if (typeof getScoresFromFirebase === 'function') {
+        getScoresFromFirebase(leaderboardFilter === 'all' ? 'normal' : leaderboardFilter, (firebaseScores) => {
+            displayOnlineLeaderboard(firebaseScores);
         });
+    } else {
+        table.innerHTML = '<div class="leaderboard-empty">Firebase functions not available.</div>';
+    }
+}
 
-        table.innerHTML = html;
+function displayOnlineLeaderboard(leaderboard) {
+    const table = document.getElementById('leaderboard-table-online');
+    
+    // Filter by selected difficulty
+    let filteredLeaderboard = leaderboard;
+    if (leaderboardFilter !== 'all') {
+        filteredLeaderboard = leaderboard.filter(entry => 
+            entry.difficulty.toLowerCase() === leaderboardFilter.toLowerCase()
+        );
+    }
+    
+    // Sort by score (highest first)
+    filteredLeaderboard.sort((a, b) => (b.score || 0) - (a.score || 0));
+
+    if (filteredLeaderboard.length === 0) {
+        table.innerHTML = '<div class="leaderboard-empty">No online scores yet. Share your score with the cloud!</div>';
+        return;
+    }
+
+    let html = '<div class="leaderboard-row header"><div class="leaderboard-rank">Rank</div><div class="leaderboard-name">Player</div><div class="leaderboard-score">Score</div><div class="leaderboard-difficulty">Difficulty</div><div class="leaderboard-date">Date</div></div>';
+
+    filteredLeaderboard.slice(0, 20).forEach((entry, index) => {
+        const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+        html += '<div class="leaderboard-row">' +
+                `<div class="leaderboard-rank">${medal} ${index + 1}</div>` +
+                `<div class="leaderboard-name">${entry.name}</div>` +
+                `<div class="leaderboard-score">${entry.score}</div>` +
+                `<div class="leaderboard-difficulty">${entry.difficulty}</div>` +
+                `<div class="leaderboard-date">${entry.date || 'N/A'}</div>` +
+                '</div>';
     });
+
+    table.innerHTML = html;
+}
+
+function loadOfflineLeaderboard() {
+    const table = document.getElementById('leaderboard-table-offline');
+    
+    // Get scores from localStorage
+    const allBoards = JSON.parse(localStorage.getItem('hangmanLeaderboardByDifficulty') || '{}');
+    let offlineScores = [];
+    
+    // Convert localStorage format to display format
+    Object.keys(allBoards).forEach(difficulty => {
+        if (Array.isArray(allBoards[difficulty])) {
+            allBoards[difficulty].forEach(entry => {
+                offlineScores.push({
+                    name: entry.name,
+                    score: entry.score,
+                    difficulty: difficulty.charAt(0).toUpperCase() + difficulty.slice(1),
+                    date: entry.date || new Date().toLocaleDateString()
+                });
+            });
+        }
+    });
+    
+    displayOfflineLeaderboard(offlineScores);
+}
+
+function displayOfflineLeaderboard(leaderboard) {
+    const table = document.getElementById('leaderboard-table-offline');
+    
+    // Filter by selected difficulty
+    let filteredLeaderboard = leaderboard;
+    if (leaderboardFilter !== 'all') {
+        filteredLeaderboard = leaderboard.filter(entry => 
+            entry.difficulty.toLowerCase() === leaderboardFilter.toLowerCase()
+        );
+    }
+    
+    // Sort by score (highest first)
+    filteredLeaderboard.sort((a, b) => b.score - a.score);
+
+    if (filteredLeaderboard.length === 0) {
+        table.innerHTML = '<div class="leaderboard-empty">No offline scores yet. Play offline to get on this leaderboard!</div>';
+        return;
+    }
+
+    let html = '<div class="leaderboard-row header"><div class="leaderboard-rank">Rank</div><div class="leaderboard-name">Player</div><div class="leaderboard-score">Score</div><div class="leaderboard-difficulty">Difficulty</div><div class="leaderboard-date">Date</div></div>';
+
+    filteredLeaderboard.slice(0, 20).forEach((entry, index) => {
+        const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+        html += '<div class="leaderboard-row">' +
+                `<div class="leaderboard-rank">${medal} ${index + 1}</div>` +
+                `<div class="leaderboard-name">${entry.name}</div>` +
+                `<div class="leaderboard-score">${entry.score}</div>` +
+                `<div class="leaderboard-difficulty">${entry.difficulty}</div>` +
+                `<div class="leaderboard-date">${entry.date}</div>` +
+                '</div>';
+    });
+
+    table.innerHTML = html;
 }
 
 function clearPlayerName() {
@@ -759,12 +1073,28 @@ function clearPlayerName() {
 }
 
 
-window.addEventListener('DOMContentLoaded', () => {
+// Initialize app - run immediately since script is loaded after DOM
+function initializeApp() {
     initIndexedDB().catch(error => {
-        console.log('IndexedDB initialization error:', error);
-        console.log('Falling back to basic leaderboard functionality');
+        console.error('IndexedDB initialization error:', error);
     });
-});
+    
+    // Initialize music button state
+    const musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
+    musicBtn.classList.toggle('muted', !musicEnabled);
+    
+    // Hide loading screen after page is ready
+    setTimeout(() => {
+        hideLoadingScreen();
+    }, 800);
+}
+
+// Run immediately if DOM is ready, or wait for DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    initializeApp();
+}
 
 // Listen for storage changes from admin panel clearing leaderboard
 window.addEventListener('storage', (e) => {

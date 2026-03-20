@@ -47,6 +47,7 @@ function loadWords() {
     words.forEach((item, idx) => {
         const li = document.createElement("li");
         const levelDisplay = item.level ? `<span style="color:#ff6b6b; font-weight:700;">Level ${item.level}</span>` : '<span style="color:#999;">No Level</span>';
+        const secondAnswerDisplay = item.word2 ? `<div class="answer-row"><span class="question-role">A2:</span> ${item.word2}</div>` : '';
         li.innerHTML = `
             <div class="question-card">
                 <div class="question-header">
@@ -54,6 +55,7 @@ function loadWords() {
                     <span class="difficulty-badge">${diff.toUpperCase()}</span>
                 </div>
                 <div class="answer-row"><span class="question-role">A:</span> ${item.word}</div>
+                ${secondAnswerDisplay}
                 <div class="answer-row">${levelDisplay}</div>
             </div>`;
 
@@ -73,24 +75,38 @@ function loadWords() {
 
 function addWord() {
     const wordInput = document.getElementById("new-word");
+    const wordInput2 = document.getElementById("new-word-2");
     const hintInput = document.getElementById("new-hint");
     const levelInput = document.getElementById("new-level");
     const diff = document.getElementById("difficulty-select").value;
     const word = wordInput.value.trim();
+    const word2 = wordInput2.value.trim();
     const hint = hintInput.value.trim();
-    const level = parseInt(levelInput.value) || 1;
+    const level = parseInt(levelInput.value) || 1;  // Ensure level is always a number
     
     if (word && hint) {
         let wordsByDiff = getWordsByDifficulty();
         if (!wordsByDiff[diff]) wordsByDiff[diff] = [];
-        wordsByDiff[diff].push({ word, hint, level });
+        
+        // Check if this is the first question for this difficulty and warn if not level 1
+        if (wordsByDiff[diff].length === 0 && level !== 1) {
+            alert('⚠️ First question should be at Level 1! Setting to Level 1.');
+            levelInput.value = "1";
+            return;
+        }
+        
+        const questionObj = { word, hint, level };  // level is already an integer
+        if (word2) questionObj.word2 = word2;
+        wordsByDiff[diff].push(questionObj);
         saveWordsByDifficulty(wordsByDiff);
         wordInput.value = "";
+        wordInput2.value = "";
         hintInput.value = "";
         levelInput.value = "1";
+        alert('Question added successfully!');
         loadWords();
     } else {
-        alert('Please enter both question and answer.');
+        alert('Please enter question and at least one answer.');
     }
 }
 
@@ -112,19 +128,30 @@ function editQuestion(idx) {
     const newQuestion = prompt("Enter new question:", currentQA.hint || "");
     if (newQuestion === null) return;
 
-    const newAnswer = prompt("Enter new answer:", currentQA.word || "");
+    const newAnswer = prompt("Enter new answer 1:", currentQA.word || "");
     if (newAnswer === null) return;
 
+    const newAnswer2 = prompt("Enter new answer 2 (optional):", currentQA.word2 || "");
+    if (newAnswer2 === null) return;
+
     if (newQuestion.trim() === "" || newAnswer.trim() === "") {
-        alert('Question and answer cannot be empty.');
+        alert('Question and at least one answer cannot be empty.');
         return;
     }
 
-    wordsByDiff[diff][idx] = {
+    const updatedObj = {
         ...currentQA,
         hint: newQuestion.trim(),
         word: newAnswer.trim()
     };
+    
+    if (newAnswer2.trim()) {
+        updatedObj.word2 = newAnswer2.trim();
+    } else {
+        delete updatedObj.word2;
+    }
+    
+    wordsByDiff[diff][idx] = updatedObj;
     saveWordsByDifficulty(wordsByDiff);
     loadWords();
 }
@@ -267,7 +294,7 @@ window.addEventListener('load', () => {
             const config = JSON.parse(saved);
             Object.assign(SCORING_CONFIG, config);
         } catch (e) {
-            console.log('Could not load saved scoring config');
+            console.error('Error loading saved scoring config:', e);
         }
     }
     updateScoringPreview();

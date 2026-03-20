@@ -18,6 +18,15 @@
     </script>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <h2>🎮 Loading...</h2>
+            <p class="loading-text">Initializing Math Quiz</p>
+        </div>
+    </div>
+
     <div class="container">
         <!-- Main Menu Screen -->
         <div class="menu-screen" id="menu-screen">
@@ -56,9 +65,9 @@
                 <span class="close-btn" id="close-difficulty">&times;</span>
                 <h2>Select Difficulty</h2>
                 <div class="difficulty-options">
-                    <button class="difficulty-btn" data-difficulty="easy">Easy (6 wrong guesses)</button>
-                    <button class="difficulty-btn active" data-difficulty="normal">Normal (6 wrong guesses)</button>
-                    <button class="difficulty-btn" data-difficulty="hard">Hard (4 wrong guesses)</button>
+                    <button class="difficulty-btn" data-difficulty="easy">Easy ( random math question )</button>
+                    <button class="difficulty-btn active" data-difficulty="normal">Normal ( Gen math )</button>
+                    <button class="difficulty-btn" data-difficulty="hard">Hard ( statistic and probability )</button>
                 </div>
             </div>
         </div>
@@ -68,15 +77,34 @@
             <div class="modal-content leaderboard-content">
                 <span class="close-btn" id="close-leaderboard">&times;</span>
                 <h2>🏆 Leaderboard</h2>
+                
+                <!-- Type toggle hidden temporarily -->
+                <div class="leaderboard-type-toggle" style="display: none;">
+                    <button class="leaderboard-type-btn active" data-type="online">🌐 Online (Cloud)</button>
+                    <button class="leaderboard-type-btn" data-type="offline">💾 Offline (Local)</button>
+                </div>
+                
                 <div class="leaderboard-filters">
                     <button class="leaderboard-filter-btn active" data-difficulty="all">All</button>
                     <button class="leaderboard-filter-btn" data-difficulty="easy">Easy</button>
                     <button class="leaderboard-filter-btn" data-difficulty="normal">Normal</button>
                     <button class="leaderboard-filter-btn" data-difficulty="hard">Hard</button>
                 </div>
-                <div class="leaderboard-table" id="leaderboard-table">
-                    <div class="leaderboard-empty">No scores yet. Play a game to get on the leaderboard!</div>
+                
+                <!-- Online Leaderboard hidden temporarily -->
+                <div id="online-leaderboard" class="leaderboard-section" style="display: none;">
+                    <div class="leaderboard-table" id="leaderboard-table-online">
+                        <div class="leaderboard-empty">Loading online scores...</div>
+                    </div>
                 </div>
+                
+                <!-- Offline Leaderboard - shown by default -->
+                <div id="offline-leaderboard" class="leaderboard-section" style="display: block;">
+                    <div class="leaderboard-table" id="leaderboard-table-offline">
+                        <div class="leaderboard-empty">No offline scores yet. Play a game to get on the leaderboard!</div>
+                    </div>
+                </div>
+                
                 <button class="menu-btn" id="clear-leaderboard-menu">🗑️ Clear My Name</button>
             </div>
         </div>
@@ -86,7 +114,10 @@
             <div class="game-content">
                 <div class="top-controls">
                     <button class="back-btn" id="back-btn">← Back to Menu</button>
-                    <button class="sound-btn" id="sound-btn" title="Toggle sound">🔊</button>
+                    <div class="audio-controls">
+                        <button class="sound-btn" id="sound-btn" title="Toggle sound effects">🔊 FX</button>
+                        <button class="music-btn" id="music-btn" title="Toggle background music">🎵</button>
+                    </div>
                 </div>
                 <h1>🎮 Math Quiz</h1>
                 
@@ -115,7 +146,7 @@
                         <line x1="130" y1="20" x2="130" y2="50" stroke="#333" stroke-width="2"/>
                     </svg>
                     <div class="hangman-display">
-                        <p>Attempts Left: <span id="wrong-count">0</span></p>
+                        <p>Wrong Attempts: <span id="wrong-count" style="font-weight:bold; color:#e74c3c; font-size:1.1em;">0/6</span></p>
                     </div>
                 </div>
 
@@ -169,6 +200,16 @@
         </div>
     </div>
 
+    <!-- Background Music -->
+    <audio id="bg-music" loop>
+        <source src="https://assets.mixkit.co/active_storage/music/4361/4361-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script>
+
+    <script src="firebase-config.js"></script>
     <script src="scoring-config.js"></script>
     <script src="script.js"></script>
 </body>
